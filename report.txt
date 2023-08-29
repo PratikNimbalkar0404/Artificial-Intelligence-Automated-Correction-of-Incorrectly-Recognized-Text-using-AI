@@ -1,0 +1,60 @@
+COL333 Assignment 1
+
+Automated Correction of Incorrectly Recognised Text
+
+Dhananjay Sapawat (2019CS10345)
+Nimbalkar Pratik Jyotiba (2020CS10607)
+
+Problem Description:
+
+We are given some sentences having some incorrect characters. We have to identify these
+characters and replace them with more suitable characters with the help of suggestion of
+characters from the given conf_matrix json file using the given cost function.
+
+Our Implementation:
+
+This question can be intuitively thought of as a DFS or BFS question. But the time
+complexity required will be very high and only a few characters would get corrected using
+this implementation. Also informed search may not help us since we do not have a specific
+single goal in our solution. Hence we try using local search methods.
+
+Local Beam Search Implementation
+
+Firstly we implement a method involving Local Beam Search. We have inverted the given
+matrix conf_matrix. This inverted matrix will map the suggested characters in conf_matrix of
+that character to the original character.
+For each character, we will replace the character with the characters present in the inverted
+matrix and if inverted matrix for that character is empty then we will use the conf_matrix itself
+to replace that character using those characters present in conf_matrix. We will find the cost
+function value of the state and store the 35 best (having least cost function value) states out
+of total best states obtained each time we move to a new character (if less than 35 states
+are present, we take them all).
+
+Hill Climbing Implementation
+
+We now implement an algorithm involving a type of hill climbing to improve our code
+efficiency. We start looking from the last character of the start_state. We find the cost
+function of the start_state 5 times (1 by taking the given last character only and other 4 by
+replacing the last character with it's 4 suggested characters given in conf_matrix file). We
+take the character having the least cost function value and replace it with the original (or
+keep the original if original is having the least cost function value). Now we traverse through
+the sentence taking the best possible character suggestion for each character till we reach
+the first character of the sentence. We thus get a further improved version of the start_state.
+Random Search Implementation:
+
+Now we apply random search algorithm. This algorithm will use the inbuilt randint() function
+in python to go to any random character in the start_state and check the cost function value 
+of the start_state replacing it with the any character (any 26 alphabets) and replace that 
+particular character with this new character if the cost function value using new character 
+is less than the original one. This algorithm will end when the time gets finished i.e. at solver
+timeout. Hence this algorithm will randomly keep checking for better characters having a
+better cost function till the end of time. We thus get a more improved version of the
+start_state.
+
+Results:
+
+In the input matrix file given, there were 15 sentences having 71 incorrect words in total. Our
+code corrects 63 words out of these 71 in the best scenario. The number of corrected words
+lie in the range [62, 63]. This is so because we are using the random search strategy which
+will correct varying number of words each time we run the code.
+
